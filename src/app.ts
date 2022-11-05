@@ -14,6 +14,12 @@ app.use(
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.use((req, res, next) => {
+  const origin = req.header("Origin");
+  res.setHeader("Access-Control-Allow-Origin", origin || "*");
+  next();
+});
+
 app.use("/robots", robotRouters);
 
 export default app;
