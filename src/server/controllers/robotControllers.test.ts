@@ -12,13 +12,13 @@ describe("Given a robotController", () => {
           json: jest.fn(),
         };
 
-        const status = 200;
+        const expectedStatus = 200;
 
         Robot.find = jest.fn().mockReturnValue(robotMock);
 
         await getRobots(null, res as Response);
 
-        expect(res.status).toHaveBeenCalledWith(status);
+        expect(res.status).toHaveBeenCalledWith(expectedStatus);
         expect(res.json).toHaveBeenCalledWith({ robots: robotMock });
       });
     });
