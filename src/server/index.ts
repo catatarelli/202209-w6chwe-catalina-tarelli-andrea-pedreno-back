@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as dotenv from "dotenv";
 import debugCreator from "debug";
-import app from "../index.js";
+import app from "../app.js";
 
 const debug = debugCreator("Things:root");
 

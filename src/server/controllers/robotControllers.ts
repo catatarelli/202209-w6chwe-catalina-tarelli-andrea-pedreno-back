@@ -4,7 +4,6 @@ import type { Request, Response } from "express";
 const getRobots = async (req: Request, res: Response) => {
   try {
     const robots = await Robot.find();
-    console.log(robots);
     if (!robots?.length) {
       res.status(404).json({ message: "No robots found" });
       return;

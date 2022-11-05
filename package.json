@@ -9,9 +9,9 @@
     "build:dev": "tsc -w",
     "start": "node .",
     "start:dev": "node --watch .",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "test:dev": "jest --watchAll",
-    "test:coverage": "jest --coverage --watchAll=false --passWithNoTests",
+    "test:coverage": "jest --coverage --watchAll=false",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/debug": "^4.1.7",
+    "@types/jest": "^29.2.2",
     "@types/morgan": "^1.9.3",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
