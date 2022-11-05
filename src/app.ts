@@ -11,7 +11,7 @@ app.use(
   cors({
     origin: [
       "https://202209-w6chwe-catalina-tarelli-andrea.netlify.app/",
-      "http://localhost:4000",
+      "http://localhost:3000",
     ],
   })
 );
