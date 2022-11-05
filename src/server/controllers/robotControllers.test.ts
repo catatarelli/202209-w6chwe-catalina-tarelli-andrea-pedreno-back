@@ -1,26 +1,52 @@
-import type { Response } from "express";
+import type { Response, NextFunction } from "express";
 import Robot from "../../database/models/Robot.js";
 import robotMock from "../../mocks/mocks.js";
 import getRobots from "./robotControllers.js";
 
-describe("Given a robotController", () => {
-  describe("When getRobots it's called", () => {
-    describe("And it receives a response", () => {
-      test("Then it should call the response method status with a 200", async () => {
-        const res: Partial<Response> = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-        };
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
-        const expectedStatus = 200;
+const res: Partial<Response> = {
+  status: jest.fn().mockReturnThis(),
+  json: jest.fn(),
+};
 
-        Robot.find = jest.fn().mockReturnValue(robotMock);
+const next = jest.fn();
 
-        await getRobots(null, res as Response, null);
+describe("Given a getRobots Controller", () => {
+  describe("When it finds a list of robots", () => {
+    test("Then it should call the response method status with a 200, and the json method", async () => {
+      const expectedStatus = 200;
 
-        expect(res.status).toHaveBeenCalledWith(expectedStatus);
-        expect(res.json).toHaveBeenCalledWith({ robots: robotMock });
-      });
+      Robot.find = jest.fn().mockReturnValue(robotMock);
+
+      await getRobots(null, res as Response, null);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalled();
+    });
+  });
+
+  describe("When it receives an empty array", () => {
+    test("Then it should call the response method status with a 404", async () => {
+      const expectedStatus = 404;
+
+      Robot.find = jest.fn().mockReturnValue([]);
+
+      await getRobots(null, res as Response, null);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
+  });
+
+  describe("When it receives a response with an error", () => {
+    test("Then next should be called", async () => {
+      Robot.find = jest.fn().mockRejectedValue(new Error(""));
+
+      await getRobots(null, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalled();
     });
   });
 });
