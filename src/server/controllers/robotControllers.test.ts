@@ -16,7 +16,7 @@ describe("Given a robotController", () => {
 
         Robot.find = jest.fn().mockReturnValue(robotMock);
 
-        await getRobots(null, res as Response);
+        await getRobots(null, res as Response, null);
 
         expect(res.status).toHaveBeenCalledWith(expectedStatus);
         expect(res.json).toHaveBeenCalledWith({ robots: robotMock });

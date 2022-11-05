@@ -1,7 +1,8 @@
 import Robot from "../../database/models/Robot.js";
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+import CustomError from "../../CustomError/CustomError.js";
 
-const getRobots = async (req: Request, res: Response) => {
+const getRobots = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const robots = await Robot.find();
     if (!robots?.length) {
@@ -10,8 +11,13 @@ const getRobots = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ robots });
-  } catch {
-    res.status(500).json({ message: "Error with the database" });
+  } catch (error: unknown) {
+    const customError = new CustomError(
+      (error as Error).message,
+      500,
+      "An error occurred"
+    );
+    next(customError);
   }
 };
 
