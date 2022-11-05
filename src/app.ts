@@ -7,14 +7,7 @@ const app = express();
 
 app.use(morgan("dev"));
 
-app.use(
-  cors({
-    origin: [
-      "https://202209-w6chwe-catalina-tarelli-andrea.netlify.app/",
-      "http://localhost:3000",
-    ],
-  })
-);
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
 app.use("/robots", robotRouters);
