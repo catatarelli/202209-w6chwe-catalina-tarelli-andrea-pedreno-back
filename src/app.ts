@@ -5,9 +5,9 @@ import cors from "cors";
 
 const app = express();
 
-app.use(morgan("dev"));
-
 app.use(cors({ origin: true, credentials: true }));
+
+app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/robots", robotRouters);
