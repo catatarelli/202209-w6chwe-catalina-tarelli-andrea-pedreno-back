@@ -4,19 +4,11 @@ import robotRouters from "./server/routers/robotRouters.js";
 import cors from "cors";
 
 const app = express();
+app.use(cors());
 
-app.use(morgan("dev"));
-
-app.use(
-  cors({
-    origin: [
-      "https://202209-w6chwe-catalina-tarelli-andrea.netlify.app/",
-      "http://localhost:3000",
-    ],
-  })
-);
 app.use(express.json());
 
 app.use("/robots", robotRouters);
+app.use(morgan("dev"));
 
 export default app;
