@@ -5,20 +5,17 @@ import cors from "cors";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
-app.use(express.json());
 app.use(morgan("dev"));
 
-app.use((req, res, next) => {
-  const origin = req.header("Origin");
-  res.setHeader("Access-Control-Allow-Origin", origin || "*");
-  next();
-});
+app.use(
+  cors({
+    origin: [
+      "https://202209-w6chwe-catalina-tarelli-andrea.netlify.app/",
+      "http://localhost:4000",
+    ],
+  })
+);
+app.use(express.json());
 
 app.use("/robots", robotRouters);
 
