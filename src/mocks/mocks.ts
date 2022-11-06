@@ -1,7 +1,8 @@
 import type RobotStructure from "../types/types.js";
 
-const robotMock: RobotStructure[] = [
+export const robotsMock: RobotStructure[] = [
   {
+    id: "6367bbebd9083fc661ea9eee",
     name: "Pocholo",
     createDate: "Jan 01 1994",
     endurance: 1,
@@ -11,4 +12,11 @@ const robotMock: RobotStructure[] = [
   },
 ];
 
-export default robotMock;
+export const robotMock: RobotStructure = {
+  id: "6367bbebd9083fc661ea9eee",
+  name: "Micoso",
+  createDate: "Sep 05 2005",
+  endurance: 10,
+  image: "",
+  speed: 6,
+};
