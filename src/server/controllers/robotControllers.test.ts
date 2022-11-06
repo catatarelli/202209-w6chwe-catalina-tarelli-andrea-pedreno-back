@@ -1,7 +1,7 @@
 import type { Response, NextFunction } from "express";
 import Robot from "../../database/models/Robot.js";
 import robotMock from "../../mocks/mocks.js";
-import getRobots from "./robotControllers.js";
+import { getRobots } from "./robotControllers.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
