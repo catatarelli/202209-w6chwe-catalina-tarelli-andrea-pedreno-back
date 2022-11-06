@@ -33,25 +33,35 @@ export const deleteRobotById = async (
   next: NextFunction
 ) => {
   const { robotId } = req.params;
-  const { token } = req.query;
+  const { token } = req.query as {
+    token: string;
+  };
 
   try {
     if (token !== process.env.TOKEN) {
-      res
-        .status(498)
-        .json({ message: "Token expired or invalid. Try with another one." });
-      return;
+      throw new CustomError(
+        `The token (${token}) provided is not valid`,
+        498,
+        "Token expired or invalid. Try with another one."
+      );
     }
 
     if (!mongoose.isValidObjectId(robotId)) {
-      res.status(404).json({ message: "Invalid id. Try with another one." });
+      throw new CustomError(
+        `The id (${robotId}) provided is not valid`,
+        404,
+        "Invalid id. Try with another one."
+      );
     }
 
     const robots = await Robot.findById(robotId);
 
     if (!robots) {
-      res.status(404).json({ error: "Sorry, no robot found with that id." });
-      return;
+      throw new CustomError(
+        `The robot searched by the id (${robotId}) doesn't exist`,
+        404,
+        "Sorry, no robot found with that id."
+      );
     }
 
     await Robot.findByIdAndDelete(robotId);
@@ -59,8 +69,9 @@ export const deleteRobotById = async (
   } catch (error: unknown) {
     const customError = new CustomError(
       (error as Error).message,
-      500,
-      "Database doesn't work, try again later."
+      (error as CustomError).statusCode ?? 500,
+      (error as CustomError).publicMessage ||
+        "Database doesn't work, try again later."
     );
     next(customError);
   }
