@@ -1,3 +1,4 @@
+import type { CorsOptions } from "cors";
 import express from "express";
 import morgan from "morgan";
 import robotRouters from "./server/routers/robotRouters.js";
@@ -5,12 +6,14 @@ import cors from "cors";
 
 const app = express();
 
-app.use(morgan("dev"));
-app.use(cors());
+const corsOptions: CorsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
 
 app.use(express.json());
-app.disable("x-powered-by");
+app.use(morgan("dev"));
 
-app.use("/robots", robotRouters);
+app.use("/robots", cors(corsOptions), robotRouters);
 
 export default app;
