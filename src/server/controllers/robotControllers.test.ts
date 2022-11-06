@@ -126,7 +126,7 @@ describe("When deleteRobotById is invoked", () => {
         query: { token: "abracadabra" },
       };
 
-      Robot.findById = jest.fn().mockRejectedValueOnce(new Error(""));
+      Robot.findById = jest.fn();
 
       await deleteRobotById(
         req as Request,
