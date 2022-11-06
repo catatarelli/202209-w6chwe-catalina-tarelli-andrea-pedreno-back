@@ -15,6 +15,15 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.disable("x-powered-by");
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 app.use("/robots", cors(corsOptions), robotRouters);
 
 export default app;
