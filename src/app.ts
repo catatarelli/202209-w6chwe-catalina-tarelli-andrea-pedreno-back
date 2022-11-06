@@ -13,6 +13,7 @@ const corsOptions: CorsOptions = {
 
 app.use(express.json());
 app.use(morgan("dev"));
+app.disable("x-powered-by");
 
 app.use("/robots", cors(corsOptions), robotRouters);
 
