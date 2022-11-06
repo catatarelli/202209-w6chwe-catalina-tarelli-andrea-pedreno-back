@@ -66,7 +66,7 @@ describe("When deleteRobotById is invoked", () => {
       };
 
       Robot.findById = jest.fn().mockReturnValue(robotMock);
-      Robot.findByIdAndDelete = jest.fn().mockReturnValue(robotMock);
+      Robot.findByIdAndDelete = jest.fn().mockReturnThis();
 
       await deleteRobotById(
         req as Request,
