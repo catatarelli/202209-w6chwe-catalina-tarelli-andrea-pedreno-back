@@ -4,6 +4,8 @@ import type { NextFunction, Request, Response } from "express";
 import CustomError from "../../CustomError/CustomError.js";
 import mongoose from "mongoose";
 
+const { TOKEN: tokenSecret } = process.env;
+
 export const getRobots = async (
   req: Request,
   res: Response,
@@ -32,13 +34,13 @@ export const deleteRobotById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { robotId } = req.params;
-  const { token } = req.query as {
-    token: string;
-  };
-
   try {
-    if (token !== process.env.TOKEN) {
+    const { robotId } = req.params;
+    const { token } = req.query as {
+      token: string;
+    };
+
+    if (!token || token !== tokenSecret) {
       throw new CustomError(
         `The token (${token}) provided is not valid`,
         498,
@@ -54,9 +56,9 @@ export const deleteRobotById = async (
       );
     }
 
-    const robots = await Robot.findById(robotId);
+    const robot = await Robot.findById(robotId);
 
-    if (!robots) {
+    if (!robot) {
       throw new CustomError(
         `The robot searched by the id (${robotId}) doesn't exist`,
         404,
@@ -64,7 +66,9 @@ export const deleteRobotById = async (
       );
     }
 
-    await Robot.findByIdAndDelete(robotId);
+    await Robot.deleteOne({
+      _id: robotId,
+    }).exec();
     res.status(200).json({ robotId });
   } catch (error: unknown) {
     const customError = new CustomError(

@@ -4,6 +4,8 @@ import Robot from "../../database/models/Robot.js";
 import { robotsMock, robotMock } from "../../mocks/mocks.js";
 import { getRobots, deleteRobotById } from "./robotControllers.js";
 
+const { TOKEN: tokenSecret } = process.env;
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
@@ -62,11 +64,13 @@ describe("When deleteRobotById is invoked", () => {
 
       const req: Partial<Request> = {
         params: { robotId: robotMock.id },
-        query: { token: "abracadabra" },
+        query: { token: tokenSecret },
       };
 
       Robot.findById = jest.fn().mockReturnValue(robotMock);
-      Robot.findByIdAndDelete = jest.fn().mockReturnThis();
+      Robot.deleteOne = jest.fn().mockReturnValue({
+        exec: jest.fn().mockReturnThis(),
+      });
 
       await deleteRobotById(
         req as Request,
@@ -108,7 +112,7 @@ describe("When deleteRobotById is invoked", () => {
       const wrongId = "452242g2dssee515";
       const req: Partial<Request> = {
         params: { robotId: wrongId },
-        query: { token: "abracadabra" },
+        query: { token: tokenSecret },
       };
 
       const customError = new CustomError(
@@ -132,7 +136,7 @@ describe("When deleteRobotById is invoked", () => {
       const nonexistentId = "6367bbebd9083fc661ea9ee0";
       const req: Partial<Request> = {
         params: { robotId: nonexistentId },
-        query: { token: "abracadabra" },
+        query: { token: tokenSecret },
       };
 
       Robot.findById = jest.fn().mockReturnValue(null);
@@ -161,7 +165,7 @@ describe("When deleteRobotById is invoked", () => {
 
       const req: Partial<Request> = {
         params: { robotId: robotMock.id },
-        query: { token: "abracadabra" },
+        query: { token: tokenSecret },
       };
 
       await deleteRobotById(
