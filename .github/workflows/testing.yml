@@ -17,4 +17,6 @@ jobs:
       - name: Testing
         run: npm test
         env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          DEBUG: ${{ secrets.DEBUG }}
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
+          TOKEN: ${{secrets.TOKEN}}
