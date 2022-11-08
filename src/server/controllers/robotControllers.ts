@@ -4,15 +4,15 @@ import type { NextFunction, Request, Response } from "express";
 import CustomError from "../../CustomError/CustomError.js";
 import mongoose from "mongoose";
 
-const { TOKEN: tokenSecret } = process.env;
-
 export const getRobots = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const robots = await Robot.find();
+    /* Const { userId } = req = Para filtrar solo por el id del robot */
+    const robots = await Robot.find(); /* Aqui se añadiría { user: userId } */
+
     if (!robots?.length) {
       res.status(404).json({ message: "No robots found." });
       return;
@@ -36,17 +36,6 @@ export const deleteRobotById = async (
 ) => {
   try {
     const { robotId } = req.params;
-    const { token } = req.query as {
-      token: string;
-    };
-
-    if (!token || token !== tokenSecret) {
-      throw new CustomError(
-        `The token (${token}) provided is not valid`,
-        498,
-        "Token expired or invalid. Try with another one."
-      );
-    }
 
     if (!mongoose.isValidObjectId(robotId)) {
       throw new CustomError(
