@@ -83,30 +83,6 @@ describe("When deleteRobotById is invoked", () => {
     });
   });
 
-  describe("And it receives a response with a wrong token", () => {
-    test("Then it should return status 498", async () => {
-      const wrongToken = "pepinillo";
-      const req: Partial<Request> = {
-        params: { robotId: robotMock.id },
-        query: { token: wrongToken },
-      };
-
-      const customError = new CustomError(
-        `The token (${wrongToken}) provided is not valid`,
-        498,
-        "Token expired or invalid. Try with another one."
-      );
-
-      await deleteRobotById(
-        req as Request,
-        res as Response,
-        next as NextFunction
-      );
-
-      expect(next).toHaveBeenCalledWith(customError);
-    });
-  });
-
   describe("And it receives a response with a wrong id", () => {
     test("Then it should return status 404", async () => {
       const wrongId = "452242g2dssee515";

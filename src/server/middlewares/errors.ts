@@ -15,5 +15,6 @@ export const generalError = (
   const statusCode = error.statusCode ?? 500;
   const message =
     error.publicMessage || "Ops, something went wrong, try again later";
+  /* Debug:(error.message) */
   res.status(statusCode).json(message);
 };

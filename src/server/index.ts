@@ -1,11 +1,9 @@
+import "../loadEnvironments.js";
 import chalk from "chalk";
-import * as dotenv from "dotenv";
 import debugCreator from "debug";
-import app from "../app.js";
+import app from "./app.js";
 
 const debug = debugCreator(`${process.env.DEBUG}:robots:root`);
-
-dotenv.config();
 
 const startServer = async (port: number) =>
   new Promise((resolve, reject) => {
@@ -14,8 +12,8 @@ const startServer = async (port: number) =>
       resolve(server);
     });
 
-    server.on("error", (error: Error) => {
-      debug(chalk.red(`There was an error in server ${error.message}`));
+    server.on("error", (error) => {
+      debug(chalk.red("Error starting the server: ", error.message));
       reject(error);
     });
   });
